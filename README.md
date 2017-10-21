@@ -48,7 +48,7 @@ Donations
 If you like this job and want to help the developer just donate what you want
 
 
-CHEESE: 	CNvovY98chUicvVznmxEUqM5CHNHpgfrVd
+CHEESE: 	CZc1qatMbGMdAARLuonx4aFkNGHmRhuNb6
 
 REVIVE:		RLayFAGvQ4R95aBkeUUNduZrbH1MjS46r6
 
