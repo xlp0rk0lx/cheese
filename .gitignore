@@ -1,0 +1,38 @@
+.qmake*
+Makefile*
+!src/Makefile*
+object_script.*
+release
+src/*.exe
+src/cheesecoin
+src/cheesecoind
+src/build.h
+.*.swp
+*.*~*
+*.bak
+*.rej
+*.orig
+*.o
+*.patch
+
+#compilation and Qt preprocessor part
+*.qm
+Makefile
+cheesecoin-qt
+cheesecoin-Qt.app
+cheesecoin-Qt.dmg
+#resources cpp
+qrc_*.cpp
+#qt creator
+*.pro.user
+#mac specific
+.DS_Store
+build
+.vscode
+
+!src/leveldb/Makefile
+
+src/.deps
+src/qt/.deps
+src/qt/moc_*.cpp
+src/qt/forms/ui_*.h
