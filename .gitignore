@@ -1,7 +1,7 @@
 .qmake*
 Makefile*
 !src/Makefile*
-object_script.*
+object_scr  pt.*
 release
 src/*.exe
 src/cheesecoin
@@ -23,6 +23,7 @@ cheesecoin-Qt.app
 cheesecoin-Qt.dmg
 #resources cpp
 qrc_*.cpp
+cheesecoin-qt_plugin_import.cpp
 #qt creator
 *.pro.user
 #mac specific
