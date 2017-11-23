@@ -42,6 +42,7 @@ CBigNum bnProofOfWorkLimitTestNet(~uint256(0) >> 16);
 
 unsigned int nTargetSpacing = 45; // 45 sec
 unsigned int nTargetSpacing_v2 = 2 * 45; // 1.5 minute
+unsigned int nTargetSpacing_v3 = 4 * 60; // 4 minutes
 unsigned int nStakeMinAge = 45 * 60;
 unsigned int nStakeMaxAge = 7 * 24 * 60 * 60; // 21 days
 unsigned int nModifierInterval = 10 * 60; // time to elapse before new modifier is computed
@@ -1145,6 +1146,8 @@ static unsigned int GetNextTargetRequiredV1(const CBlockIndex* pindexLast, bool 
     if (pindexPrevPrev->pprev == NULL)
         return bnTargetLimit.GetCompact(); // second block
 
+
+    uint64_t nTargetSpacing = GetTargetSpacing(pindexLast->nHeight);
     int64_t nActualSpacing = pindexPrev->GetBlockTime() - pindexPrevPrev->GetBlockTime();
 
     // ppcoin: target change every block
@@ -1163,15 +1166,6 @@ static unsigned int GetNextTargetRequiredV1(const CBlockIndex* pindexLast, bool 
 
 static unsigned int GetNextTargetRequiredV2(const CBlockIndex* pindexLast, bool fProofOfStake)
 {
-    if (pindexBest->nHeight+1 >= 40000)
-    {
-        nTargetSpacing = nTargetSpacing_v2;
-    }
-    else
-    {
-        nTargetSpacing = nTargetSpacing;
-    }
-
     if (pindexBest->nHeight+1 >= 40000)
     {
         nTargetTimespan = nTargetTimespan_v2;
@@ -1195,15 +1189,15 @@ static unsigned int GetNextTargetRequiredV2(const CBlockIndex* pindexLast, bool 
 
     int64_t nActualSpacing = pindexPrev->GetBlockTime() - pindexPrevPrev->GetBlockTime();
     if (nActualSpacing < 0)
-        nActualSpacing = nTargetSpacing;
+        nActualSpacing = GetTargetSpacing(pindexBest->nHeight);
 
     // ppcoin: target change every block
     // ppcoin: retarget with exponential moving toward target spacing
     CBigNum bnNew;
     bnNew.SetCompact(pindexPrev->nBits);
-    int64_t nInterval = nTargetTimespan / nTargetSpacing;
-    bnNew *= ((nInterval - 1) * nTargetSpacing + nActualSpacing + nActualSpacing);
-    bnNew /= ((nInterval + 1) * nTargetSpacing);
+    int64_t nInterval = nTargetTimespan / GetTargetSpacing(pindexBest->nHeight);
+    bnNew *= ((nInterval - 1) * GetTargetSpacing(pindexBest->nHeight) + nActualSpacing + nActualSpacing);
+    bnNew /= ((nInterval + 1) * GetTargetSpacing(pindexBest->nHeight));
 
     if (bnNew <= 0 || bnNew > bnTargetLimit)
         bnNew = bnTargetLimit;

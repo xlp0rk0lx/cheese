@@ -65,6 +65,18 @@ static const uint256 hashGenesisBlockTestNet("0x00008d43d930f6656b579a8474c3f076
 inline int64_t PastDrift(int64_t nTime)   { return nTime - 10 * 60; } // up to 10 minutes from the past
 inline int64_t FutureDrift(int64_t nTime) { return nTime + 10 * 60; } // up to 10 minutes from the future
 
+inline unsigned int GetTargetSpacing(int nHeight) {
+    if (nHeight+1 >= 40000 && nHeight+1 < 10000) {
+        return nTargetSpacing_v2;
+    }
+
+    if (nHeight+1 >= 100000) {
+        return nTargetSpacing_v3;
+    }
+
+    return nTargetSpacing;
+}
+
 extern libzerocoin::Params* ZCParams;
 extern CScript COINBASE_FLAGS;
 extern CCriticalSection cs_main;
