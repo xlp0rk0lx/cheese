@@ -40,9 +40,7 @@ CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // "standard" scrypt target limit
 CBigNum bnProofOfStakeLimit(~uint256(0) >> 20);
 CBigNum bnProofOfWorkLimitTestNet(~uint256(0) >> 16);
 
-unsigned int nTargetSpacing = 45; // 45 sec
-unsigned int nTargetSpacing_v2 = 2 * 45; // 1.5 minute
-unsigned int nTargetSpacing_v3 = 4 * 60; // 4 minutes
+unsigned int nTargetSpacing = 45; // 45 sec (check GetTargetSpacing)
 unsigned int nStakeMinAge = 45 * 60;
 unsigned int nStakeMaxAge = 7 * 24 * 60 * 60; // 21 days
 unsigned int nModifierInterval = 10 * 60; // time to elapse before new modifier is computed

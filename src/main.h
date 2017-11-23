@@ -66,15 +66,15 @@ inline int64_t PastDrift(int64_t nTime)   { return nTime - 10 * 60; } // up to 1
 inline int64_t FutureDrift(int64_t nTime) { return nTime + 10 * 60; } // up to 10 minutes from the future
 
 inline unsigned int GetTargetSpacing(int nHeight) {
-    if (nHeight+1 >= 40000 && nHeight+1 < 10000) {
-        return nTargetSpacing_v2;
+    if (nHeight+1 >= 40000 && nHeight+1 < 100000) {
+        return 2 * 45; // 1.5 minutes
     }
 
     if (nHeight+1 >= 100000) {
-        return nTargetSpacing_v3;
+        return 4 * 60; // 4 minutes
     }
 
-    return nTargetSpacing;
+    return 45;
 }
 
 extern libzerocoin::Params* ZCParams;
