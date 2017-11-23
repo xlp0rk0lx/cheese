@@ -65,7 +65,8 @@ static const uint256 hashGenesisBlockTestNet("0x00008d43d930f6656b579a8474c3f076
 inline int64_t PastDrift(int64_t nTime)   { return nTime - 10 * 60; } // up to 10 minutes from the past
 inline int64_t FutureDrift(int64_t nTime) { return nTime + 10 * 60; } // up to 10 minutes from the future
 
-inline unsigned int GetTargetSpacing(int nHeight) {
+inline unsigned int GetTargetSpacing(int nHeight)
+{
     if (nHeight+1 >= 40000 && nHeight+1 < 100000) {
         return 2 * 45; // 1.5 minutes
     }
@@ -74,7 +75,18 @@ inline unsigned int GetTargetSpacing(int nHeight) {
         return 4 * 60; // 4 minutes
     }
 
+    // default 45 secs
     return 45;
+}
+
+inline unsigned int GetStakeMinAge(int nHeight)
+{
+    if (nHeight+1 >= 100000) {
+        return 24 * 60 * 60; // 24 hours
+    }
+
+    // defaults to 45 mins
+    return 45 * 60;
 }
 
 extern libzerocoin::Params* ZCParams;
