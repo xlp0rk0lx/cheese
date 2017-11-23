@@ -82,7 +82,7 @@ inline unsigned int GetTargetSpacing(int nHeight)
 inline unsigned int GetStakeMinAge(int nHeight)
 {
     if (nHeight+1 >= 100000) {
-        return 24 * 60 * 60; // 24 hours
+        return 12 * 60 * 60; // 12 hours
     }
 
     // defaults to 45 mins
