@@ -1001,32 +1001,23 @@ uint256 WantedByOrphan(const CBlock* pblockOrphan)
 int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
 {
 
-            int64_t nSubsidy = 0;
+    int64_t nSubsidy = 0;
 
-            if(nBestHeight == 0)
-            {
-            nSubsidy = 150000000 * COIN;
-            }
-
-            else if(nBestHeight <= 20)
-            {
-            nSubsidy = 15 * COIN;
-            }
-
-            else if(nBestHeight <= 500)
-            {
-            nSubsidy = 1 * COIN;
-            }
-
-            else if(nBestHeight <= 5000)
-            {
-            nSubsidy = 15 * COIN;
-            }
-
-            else if(nBestHeight <= 200000)
-            {
-            nSubsidy = 25 * COIN;
-            }
+    if(nBestHeight == 0) {
+        nSubsidy = 150000000 * COIN;
+    } else if(nBestHeight <= 20) {
+        nSubsidy = 15 * COIN;
+    } else if(nBestHeight <= 500) {
+        nSubsidy = 1 * COIN;
+    } else if(nBestHeight <= 5000) {
+        nSubsidy = 15 * COIN;
+    } else if(nBestHeight <= 100000) {
+        nSubsidy = 25 * COIN;
+    } else if (nBestHeight <= 200000) {
+        nSubsidy = 5 * COIN;
+    } else {
+        nSubsidy = 1 * COIN;
+    }
 
     if (fDebug && GetBoolArg("-printcreation"))
         printf("GetProofOfWorkReward() : create=%s nSubsidy=%"PRId64"\n", FormatMoney(nSubsidy).c_str(), nSubsidy);
@@ -1039,39 +1030,37 @@ int64_t GetProofOfStakeReward(int nHeight, int64_t nCoinAge, int64_t nFees)
 {
     int64_t nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8);
 
-            if(nBestHeight <= 50)
-            {
-            	nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 7.3 ;  //7300%
-            }
-            else if(nBestHeight <= 500)
-            {
-            	nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 33 ;  //7300%
-            }
+    if(nBestHeight <= 50) {
+        nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 7.3 ;  //7300%
+    } else if(nBestHeight <= 500) {
+        nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 33 ;  //7300%
+    } else if (nBestHeight <= 2500) {
+        nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 5 ; // 5000%
+    } else if (nBestHeight <= 10000) {
+        nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 5 ; // 5000%
+    } else if (nBestHeight <= 50000) {
+        nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 4 ; // 2500%
+    } else if (nBestHeight <= 100000) {
+        nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 15 ; // 666%
+    } else if (nBestHeight > 100000) {
+        if (nBestHeight <= 120000) {
+            nSubsidy = nCoinAge * 555 * 33 / (365 * 33 + 8); // 555%
+        } else if (nBestHeight <= 140000) {
+            nSubsidy = nCoinAge * 444 * 33 / (365 * 33 + 8); // 444%
+        } else if (nBestHeight <= 160000) {
+            nSubsidy = nCoinAge * 333 * 33 / (365 * 33 + 8); // 333%
+        } else if (nBestHeight <= 180000) {
+            nSubsidy = nCoinAge * 222 * 33 / (365 * 33 + 8); // 222%
+        } else if (nBestHeight <= 200000) {
+            nSubsidy = nCoinAge * 122 * 33 / (365 * 33 + 8); // 122%
+        } else {
+            nSubsidy = nCoinAge * 100 * 33 / (365 * 33 + 8); // 100%
+        }
 
-	    else if (nBestHeight <= 2500)
-            {
-            	nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 5 ;  //5000%
-            }
-
-	    else if (nBestHeight <= 10000)
-            {
-            	nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 5 ;  //5000%
-            }
-
-	    else if (nBestHeight <= 50000)
-            {
- 	    	nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 4 ;  //2500%
-            }
-
-	    else if (nBestHeight <= 150000)
-            {
-            nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 15 ;  //666%
-            }
-
-	    else
-            {
-            nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 30 ;  //~333%
-            }
+        if (nBestHeight % 2 == 0) {
+            nSubsidy *= 1.5;
+        }
+    }
 
     if (fDebug && GetBoolArg("-printcreation"))
         printf("GetProofOfStakeReward(): create=%s nCoinAge=%"PRId64"\n", FormatMoney(nSubsidy).c_str(), nCoinAge);
@@ -2622,23 +2611,23 @@ bool LoadBlockIndex(bool fAllowNew)
         block.nBits    = bnProofOfWorkLimit.GetCompact();
         block.nNonce   = !fTestNet ? 43370 : 1222118;
         
-        if (true  && (block.GetHash() != hashGenesisBlock)) {
-
-                // This will figure out a valid hash and Nonce if you're
-                // creating a different genesis block:
-                    uint256 hashTarget = CBigNum().SetCompact(block.nBits).getuint256();
-                    while (block.GetHash() > hashTarget)
-                       {
-                           ++block.nNonce;
-                           if (block.nNonce == 0)
-                           {
-                               printf("NONCE WRAPPED, incrementing time");
-                               ++block.nTime;
-                           }
-                       }
+        if (true  && (block.GetHash() != hashGenesisBlock))
+        {
+            // This will figure out a valid hash and Nonce if you're
+            // creating a different genesis block:
+            uint256 hashTarget = CBigNum().SetCompact(block.nBits).getuint256();
+            while (block.GetHash() > hashTarget)
+            {
+                ++block.nNonce;
+                if (block.nNonce == 0)
+                {
+                    printf("NONCE WRAPPED, incrementing time");
+                    ++block.nTime;
+                }
+            }
         }
 
-        //// debug print
+        // debug print
         block.print();
         
         printf("block.GetHash() == %s\n", block.GetHash().ToString().c_str());
