@@ -34,6 +34,7 @@ static const int POW_RE_ENABLE = 0;
 
 static const unsigned int FORK_TIME = 1508493860; // Thursday, October 19, 2017 12:00:00 AM GMT. Reject v13 clients
 static const unsigned int FORK_TIME_2 = 1508493860; // Thursday, October 26, 2017 12:00:00 AM GMT. Reject all older clients
+static const unsigned int FORK_HEIGHT_3 = 100000; // Reject all older clients
 
 /** The maximum allowed size for a serialized block, in bytes (network rule) */
 static const unsigned int MAX_BLOCK_SIZE = 1000000;

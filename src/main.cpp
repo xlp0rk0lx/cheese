@@ -2936,7 +2936,9 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
             return false;
         }
 
-        if (pfrom->nVersion < (GetAdjustedTime() > FORK_TIME_2 ? MIN_PROTO_VERSION_FORK_2 : MIN_PROTO_VERSION))
+        if (pfrom->nVersion < MIN_PROTO_VERSION ||
+            (GetAdjustedTime() > FORK_TIME_2 && pfrom->nVersion < MIN_PROTO_VERSION_FORK_2) ||
+            (nBestHeight >= FORK_HEIGHT_3 && pfrom->nVersion < MIN_PROTO_VERSION_FORK_3))
         {
             // disconnect from peers older than this proto version
             printf("partner %s using obsolete version %i; disconnecting\n", pfrom->addr.ToString().c_str(), pfrom->nVersion);
