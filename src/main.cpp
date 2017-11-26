@@ -40,8 +40,7 @@ CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // "standard" scrypt target limit
 CBigNum bnProofOfStakeLimit(~uint256(0) >> 20);
 CBigNum bnProofOfWorkLimitTestNet(~uint256(0) >> 16);
 
-unsigned int nTargetSpacing = 45; // 45 sec
-unsigned int nTargetSpacing_v2 = 2 * 45; // 1.5 minute
+unsigned int nTargetSpacing = 45; // 45 sec (check GetTargetSpacing)
 unsigned int nStakeMinAge = 45 * 60;
 unsigned int nStakeMaxAge = 7 * 24 * 60 * 60; // 21 days
 unsigned int nModifierInterval = 10 * 60; // time to elapse before new modifier is computed
@@ -1002,32 +1001,23 @@ uint256 WantedByOrphan(const CBlock* pblockOrphan)
 int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
 {
 
-            int64_t nSubsidy = 0;
+    int64_t nSubsidy = 0;
 
-            if(nBestHeight == 0)
-            {
-            nSubsidy = 150000000 * COIN;
-            }
-
-            else if(nBestHeight <= 20)
-            {
-            nSubsidy = 15 * COIN;
-            }
-
-            else if(nBestHeight <= 500)
-            {
-            nSubsidy = 1 * COIN;
-            }
-
-            else if(nBestHeight <= 5000)
-            {
-            nSubsidy = 15 * COIN;
-            }
-
-            else if(nBestHeight <= 200000)
-            {
-            nSubsidy = 25 * COIN;
-            }
+    if(nBestHeight == 0) {
+        nSubsidy = 150000000 * COIN;
+    } else if(nBestHeight <= 20) {
+        nSubsidy = 15 * COIN;
+    } else if(nBestHeight <= 500) {
+        nSubsidy = 1 * COIN;
+    } else if(nBestHeight <= 5000) {
+        nSubsidy = 15 * COIN;
+    } else if(nBestHeight <= 100000) {
+        nSubsidy = 25 * COIN;
+    } else if (nBestHeight <= 200000) {
+        nSubsidy = 5 * COIN;
+    } else {
+        nSubsidy = 1 * COIN;
+    }
 
     if (fDebug && GetBoolArg("-printcreation"))
         printf("GetProofOfWorkReward() : create=%s nSubsidy=%"PRId64"\n", FormatMoney(nSubsidy).c_str(), nSubsidy);
@@ -1040,39 +1030,35 @@ int64_t GetProofOfStakeReward(int nHeight, int64_t nCoinAge, int64_t nFees)
 {
     int64_t nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8);
 
-            if(nBestHeight <= 50)
-            {
-            	nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 7.3 ;  //7300%
-            }
-            else if(nBestHeight <= 500)
-            {
-            	nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 33 ;  //7300%
-            }
+    if(nBestHeight <= 50) {
+        nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 7.3 ;  //7300%
+    } else if(nBestHeight <= 500) {
+        nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 33 ;  //7300%
+    } else if (nBestHeight <= 2500) {
+        nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 5 ; // 5000%
+    } else if (nBestHeight <= 10000) {
+        nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 5 ; // 5000%
+    } else if (nBestHeight <= 50000) {
+        nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 4 ; // 2500%
+    } else if (nBestHeight <= 100000) {
+        nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 15 ; // 666%
+    } else if (nBestHeight > 100000) {
+        if (nBestHeight <= 300000) {
+            nSubsidy = nCoinAge * 555 * 33 / (365 * 33 + 8); // 555%
+        } else if (nBestHeight <= 500000) {
+            nSubsidy = nCoinAge * 444 * 33 / (365 * 33 + 8); // 444%
+        } else if (nBestHeight <= 700000) {
+            nSubsidy = nCoinAge * 333 * 33 / (365 * 33 + 8); // 333%
+        } else if (nBestHeight <= 900000) {
+            nSubsidy = nCoinAge * 222 * 33 / (365 * 33 + 8); // 222%
+        } else {
+            nSubsidy = nCoinAge * 122 * 33 / (365 * 33 + 8); // 122%
+        }
 
-	    else if (nBestHeight <= 2500)
-            {
-            	nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 5 ;  //5000%
-            }
-
-	    else if (nBestHeight <= 10000)
-            {
-            	nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 5 ;  //5000%
-            }
-
-	    else if (nBestHeight <= 50000)
-            {
- 	    	nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 4 ;  //2500%
-            }
-
-	    else if (nBestHeight <= 150000)
-            {
-            nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 15 ;  //666%
-            }
-
-	    else
-            {
-            nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 30 ;  //~333%
-            }
+        if (nBestHeight % 2 == 0) {
+            nSubsidy *= 1.5;
+        }
+    }
 
     if (fDebug && GetBoolArg("-printcreation"))
         printf("GetProofOfStakeReward(): create=%s nCoinAge=%"PRId64"\n", FormatMoney(nSubsidy).c_str(), nCoinAge);
@@ -1145,6 +1131,8 @@ static unsigned int GetNextTargetRequiredV1(const CBlockIndex* pindexLast, bool 
     if (pindexPrevPrev->pprev == NULL)
         return bnTargetLimit.GetCompact(); // second block
 
+
+    uint64_t nTargetSpacing = GetTargetSpacing(pindexLast->nHeight);
     int64_t nActualSpacing = pindexPrev->GetBlockTime() - pindexPrevPrev->GetBlockTime();
 
     // ppcoin: target change every block
@@ -1163,15 +1151,6 @@ static unsigned int GetNextTargetRequiredV1(const CBlockIndex* pindexLast, bool 
 
 static unsigned int GetNextTargetRequiredV2(const CBlockIndex* pindexLast, bool fProofOfStake)
 {
-    if (pindexBest->nHeight+1 >= 40000)
-    {
-        nTargetSpacing = nTargetSpacing_v2;
-    }
-    else
-    {
-        nTargetSpacing = nTargetSpacing;
-    }
-
     if (pindexBest->nHeight+1 >= 40000)
     {
         nTargetTimespan = nTargetTimespan_v2;
@@ -1195,15 +1174,15 @@ static unsigned int GetNextTargetRequiredV2(const CBlockIndex* pindexLast, bool 
 
     int64_t nActualSpacing = pindexPrev->GetBlockTime() - pindexPrevPrev->GetBlockTime();
     if (nActualSpacing < 0)
-        nActualSpacing = nTargetSpacing;
+        nActualSpacing = GetTargetSpacing(pindexBest->nHeight);
 
     // ppcoin: target change every block
     // ppcoin: retarget with exponential moving toward target spacing
     CBigNum bnNew;
     bnNew.SetCompact(pindexPrev->nBits);
-    int64_t nInterval = nTargetTimespan / nTargetSpacing;
-    bnNew *= ((nInterval - 1) * nTargetSpacing + nActualSpacing + nActualSpacing);
-    bnNew /= ((nInterval + 1) * nTargetSpacing);
+    int64_t nInterval = nTargetTimespan / GetTargetSpacing(pindexBest->nHeight);
+    bnNew *= ((nInterval - 1) * GetTargetSpacing(pindexBest->nHeight) + nActualSpacing + nActualSpacing);
+    bnNew /= ((nInterval + 1) * GetTargetSpacing(pindexBest->nHeight));
 
     if (bnNew <= 0 || bnNew > bnTargetLimit)
         bnNew = bnTargetLimit;
@@ -1980,7 +1959,7 @@ bool CTransaction::GetCoinAge(CTxDB& txdb, uint64_t& nCoinAge) const
         CBlock block;
         if (!block.ReadFromDisk(txindex.pos.nFile, txindex.pos.nBlockPos, false))
             return false; // unable to read block of previous transaction
-        if (block.GetBlockTime() + nStakeMinAge > nTime)
+        if (block.GetBlockTime() + GetStakeMinAge(nBestHeight) > nTime)
             continue; // only count coins meeting min age requirement
 
         int64_t nValueIn = txPrev.vout[txin.prevout.n].nValue;
@@ -2630,23 +2609,23 @@ bool LoadBlockIndex(bool fAllowNew)
         block.nBits    = bnProofOfWorkLimit.GetCompact();
         block.nNonce   = !fTestNet ? 43370 : 1222118;
         
-        if (true  && (block.GetHash() != hashGenesisBlock)) {
-
-                // This will figure out a valid hash and Nonce if you're
-                // creating a different genesis block:
-                    uint256 hashTarget = CBigNum().SetCompact(block.nBits).getuint256();
-                    while (block.GetHash() > hashTarget)
-                       {
-                           ++block.nNonce;
-                           if (block.nNonce == 0)
-                           {
-                               printf("NONCE WRAPPED, incrementing time");
-                               ++block.nTime;
-                           }
-                       }
+        if (true  && (block.GetHash() != hashGenesisBlock))
+        {
+            // This will figure out a valid hash and Nonce if you're
+            // creating a different genesis block:
+            uint256 hashTarget = CBigNum().SetCompact(block.nBits).getuint256();
+            while (block.GetHash() > hashTarget)
+            {
+                ++block.nNonce;
+                if (block.nNonce == 0)
+                {
+                    printf("NONCE WRAPPED, incrementing time");
+                    ++block.nTime;
+                }
+            }
         }
 
-        //// debug print
+        // debug print
         block.print();
         
         printf("block.GetHash() == %s\n", block.GetHash().ToString().c_str());
@@ -2957,7 +2936,9 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
             return false;
         }
 
-        if (pfrom->nVersion < (GetAdjustedTime() > FORK_TIME_2 ? MIN_PROTO_VERSION_FORK_2 : MIN_PROTO_VERSION))
+        if (pfrom->nVersion < MIN_PROTO_VERSION ||
+            (GetAdjustedTime() > FORK_TIME_2 && pfrom->nVersion < MIN_PROTO_VERSION_FORK_2) ||
+            (nBestHeight >= FORK_HEIGHT_3 && pfrom->nVersion < MIN_PROTO_VERSION_FORK_3))
         {
             // disconnect from peers older than this proto version
             printf("partner %s using obsolete version %i; disconnecting\n", pfrom->addr.ToString().c_str(), pfrom->nVersion);
@@ -3290,7 +3271,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
                 printf("  getblocks stopping at %d %s\n", pindex->nHeight, pindex->GetBlockHash().ToString().substr(0,20).c_str());
                 // ppcoin: tell downloading node about the latest block if it's
                 // without risk being rejected due to stake connection check
-                if (hashStop != hashBestChain && pindex->GetBlockTime() + nStakeMinAge > pindexBest->GetBlockTime())
+                if (hashStop != hashBestChain && pindex->GetBlockTime() + GetStakeMinAge(pindex->nHeight) > pindexBest->GetBlockTime())
                     pfrom->PushInventory(CInv(MSG_BLOCK, hashBestChain));
                 break;
             }

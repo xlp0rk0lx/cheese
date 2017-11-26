@@ -34,6 +34,7 @@ static const int POW_RE_ENABLE = 0;
 
 static const unsigned int FORK_TIME = 1508493860; // Thursday, October 19, 2017 12:00:00 AM GMT. Reject v13 clients
 static const unsigned int FORK_TIME_2 = 1508493860; // Thursday, October 26, 2017 12:00:00 AM GMT. Reject all older clients
+static const unsigned int FORK_HEIGHT_3 = 100000; // Reject all older clients
 
 /** The maximum allowed size for a serialized block, in bytes (network rule) */
 static const unsigned int MAX_BLOCK_SIZE = 1000000;
@@ -64,6 +65,30 @@ static const uint256 hashGenesisBlockTestNet("0x00008d43d930f6656b579a8474c3f076
 
 inline int64_t PastDrift(int64_t nTime)   { return nTime - 10 * 60; } // up to 10 minutes from the past
 inline int64_t FutureDrift(int64_t nTime) { return nTime + 10 * 60; } // up to 10 minutes from the future
+
+inline unsigned int GetTargetSpacing(int nHeight)
+{
+    if (nHeight+1 >= 40000 && nHeight+1 < 100000) {
+        return 2 * 45; // 1.5 minutes
+    }
+
+    if (nHeight+1 >= 100000) {
+        return 4 * 60; // 4 minutes
+    }
+
+    // default 45 secs
+    return 45;
+}
+
+inline unsigned int GetStakeMinAge(int nHeight)
+{
+    if (nHeight+1 >= 100000) {
+        return 12 * 60 * 60; // 12 hours
+    }
+
+    // defaults to 45 mins
+    return 45 * 60;
+}
 
 extern libzerocoin::Params* ZCParams;
 extern CScript COINBASE_FLAGS;
