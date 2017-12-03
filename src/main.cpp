@@ -1043,20 +1043,20 @@ int64_t GetProofOfStakeReward(int nHeight, int64_t nCoinAge, int64_t nFees)
     } else if (nBestHeight <= 100000) {
         nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 15 ; // 666%
     } else if (nBestHeight > 100000) {
-        if (nBestHeight <= 100500){
+        if (nBestHeight <= 101000){
           nSubsidy = nCoinAge * 555 * 33 / (365 * 33 + 8); // 555%
         }
-          else if (nBestHeight <= 300000) {
-              nSubsidy = nCoinAge * COIN_YEAR_REWARD * 555 * 33 / (365 * 33 + 8); // 555%
-          } else if (nBestHeight <= 500000) {
-              nSubsidy = nCoinAge * COIN_YEAR_REWARD * 444 * 33 / (365 * 33 + 8); // 444%
-          } else if (nBestHeight <= 700000) {
-              nSubsidy = nCoinAge * COIN_YEAR_REWARD * 333 * 33 / (365 * 33 + 8); // 333%
-          } else if (nBestHeight <= 900000) {
-              nSubsidy = nCoinAge * COIN_YEAR_REWARD * 222 * 33 / (365 * 33 + 8); // 222%
-          } else {
-              nSubsidy = nCoinAge * COIN_YEAR_REWARD * 122 * 33 / (365 * 33 + 8); // 122%
-          }
+        else if (nBestHeight <= 300000) {
+            nSubsidy = nCoinAge * (555 * CENT) * 33 / (365 * 33 + 8); // 555%
+        } else if (nBestHeight <= 500000) {
+            nSubsidy = nCoinAge * (444 * CENT) * 33 / (365 * 33 + 8); // 444%
+        } else if (nBestHeight <= 700000) {
+            nSubsidy = nCoinAge * (333 * CENT) * 33 / (365 * 33 + 8); // 333%
+        } else if (nBestHeight <= 900000) {
+            nSubsidy = nCoinAge * (222 * CENT) * 33 / (365 * 33 + 8); // 222%
+        } else {
+            nSubsidy = nCoinAge * (122 * CENT) * 33 / (365 * 33 + 8); // 122%
+        }
 
         if (nBestHeight % 2 == 0) {
             nSubsidy *= 1.5;
@@ -2941,7 +2941,8 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
 
         if (pfrom->nVersion < MIN_PROTO_VERSION ||
             (GetAdjustedTime() > FORK_TIME_2 && pfrom->nVersion < MIN_PROTO_VERSION_FORK_2) ||
-            (nBestHeight >= FORK_HEIGHT_3 && pfrom->nVersion < MIN_PROTO_VERSION_FORK_3))
+            (nBestHeight >= FORK_HEIGHT_3 && pfrom->nVersion < MIN_PROTO_VERSION_FORK_3) ||
+            (nBestHeight >= FORK_HEIGHT_4 && pfrom->nVersion < MIN_PROTO_VERSION_FORK_4))
         {
             // disconnect from peers older than this proto version
             printf("partner %s using obsolete version %i; disconnecting\n", pfrom->addr.ToString().c_str(), pfrom->nVersion);
