@@ -37,6 +37,7 @@ namespace Checkpoints
         ( 8,      uint256("0x000002a583d275bc616f4b90c4191579f1888db4d489d83f15ccf56ed2eea35b") )
         ( 9,      uint256("0x000002b723ac2ba00cc583013536709114413feb995430d3420d300ee17931cd") )
         ( 10,      uint256("0x000003ab5020259625355d362145c32fdd643ffcb03fcb18cd000a45c4751de8") )
+        ( 100006, uint256("0x0000000000692b7bcdb6ae4444fee9a139044c86c07946a2c87945a1af8f2645") )
     ;
 
 
@@ -197,7 +198,7 @@ namespace Checkpoints
         return false;
     }
 
-    // Automatically select a suitable sync-checkpoint 
+    // Automatically select a suitable sync-checkpoint
     uint256 AutoSelectSyncCheckpoint()
     {
         const CBlockIndex *pindex = pindexBest;
@@ -242,7 +243,7 @@ namespace Checkpoints
             return false;
         if (hashBlock == hashPendingCheckpoint)
             return true;
-        if (mapOrphanBlocks.count(hashPendingCheckpoint) 
+        if (mapOrphanBlocks.count(hashPendingCheckpoint)
             && hashBlock == WantedByOrphan(mapOrphanBlocks[hashPendingCheckpoint]))
             return true;
         return false;
