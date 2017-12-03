@@ -1043,17 +1043,20 @@ int64_t GetProofOfStakeReward(int nHeight, int64_t nCoinAge, int64_t nFees)
     } else if (nBestHeight <= 100000) {
         nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 15 ; // 666%
     } else if (nBestHeight > 100000) {
-        if (nBestHeight <= 300000) {
-            nSubsidy = nCoinAge * 555 * 33 / (365 * 33 + 8); // 555%
-        } else if (nBestHeight <= 500000) {
-            nSubsidy = nCoinAge * 444 * 33 / (365 * 33 + 8); // 444%
-        } else if (nBestHeight <= 700000) {
-            nSubsidy = nCoinAge * 333 * 33 / (365 * 33 + 8); // 333%
-        } else if (nBestHeight <= 900000) {
-            nSubsidy = nCoinAge * 222 * 33 / (365 * 33 + 8); // 222%
-        } else {
-            nSubsidy = nCoinAge * 122 * 33 / (365 * 33 + 8); // 122%
+        if (nBestHeight <= 100500){
+          nSubsidy = nCoinAge * 555 * 33 / (365 * 33 + 8); // 555%
         }
+          else if (nBestHeight <= 300000) {
+              nSubsidy = nCoinAge * COIN_YEAR_REWARD * 555 * 33 / (365 * 33 + 8); // 555%
+          } else if (nBestHeight <= 500000) {
+              nSubsidy = nCoinAge * COIN_YEAR_REWARD * 444 * 33 / (365 * 33 + 8); // 444%
+          } else if (nBestHeight <= 700000) {
+              nSubsidy = nCoinAge * COIN_YEAR_REWARD * 333 * 33 / (365 * 33 + 8); // 333%
+          } else if (nBestHeight <= 900000) {
+              nSubsidy = nCoinAge * COIN_YEAR_REWARD * 222 * 33 / (365 * 33 + 8); // 222%
+          } else {
+              nSubsidy = nCoinAge * COIN_YEAR_REWARD * 122 * 33 / (365 * 33 + 8); // 122%
+          }
 
         if (nBestHeight % 2 == 0) {
             nSubsidy *= 1.5;
@@ -1158,8 +1161,8 @@ static unsigned int GetNextTargetRequiredV2(const CBlockIndex* pindexLast, bool 
     else
     {
         nTargetTimespan = nTargetTimespan_v1;
-    }	
-	
+    }
+
     CBigNum bnTargetLimit = fProofOfStake ? bnProofOfStakeLimit : bnProofOfWorkLimit;
 
     if (pindexLast == NULL)
@@ -1933,7 +1936,7 @@ bool CBlock::SetBestChain(CTxDB& txdb, CBlockIndex* pindexNew)
 // ppcoin: total coin age spent in transaction, in the unit of coin-days.
 // Only those coins meeting minimum age requirement counts. As those
 // transactions not in main chain are not currently indexed so we
-// might not find out about their coin age. Older transactions are 
+// might not find out about their coin age. Older transactions are
 // guaranteed to be in main chain by sync-checkpoint. This rule is
 // introduced to help nodes establish a consistent view of the coin
 // age (trust score) of competing branches.
@@ -2608,7 +2611,7 @@ bool LoadBlockIndex(bool fAllowNew)
         block.nTime    = 1508493860;
         block.nBits    = bnProofOfWorkLimit.GetCompact();
         block.nNonce   = !fTestNet ? 43370 : 1222118;
-        
+
         if (true  && (block.GetHash() != hashGenesisBlock))
         {
             // This will figure out a valid hash and Nonce if you're
@@ -2627,12 +2630,12 @@ bool LoadBlockIndex(bool fAllowNew)
 
         // debug print
         block.print();
-        
+
         printf("block.GetHash() == %s\n", block.GetHash().ToString().c_str());
         printf("block.hashMerkleRoot == %s\n", block.hashMerkleRoot.ToString().c_str());
         printf("block.nTime = %u \n", block.nTime);
         printf("block.nNonce = %u \n", block.nNonce);
-                
+
         assert(block.hashMerkleRoot == uint256("0x37f490f0667b16717a32a29036ef607cc8ba3a3e6f15220bb943880b330f10a6"));
         assert(block.GetHash() == (!fTestNet ? hashGenesisBlock : hashGenesisBlockTestNet));
         assert(block.CheckBlock());
@@ -2945,7 +2948,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
             pfrom->fDisconnect = true;
             return false;
         }
-	    
+
         if (pfrom->nVersion == 10300)
             pfrom->nVersion = 300;
         if (!vRecv.empty())
@@ -3212,7 +3215,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
                     if (inv.hash == pfrom->hashContinue)
                     {
                         // ppcoin: send latest proof-of-work block to allow the
-                        // download node to accept as orphan (proof-of-stake 
+                        // download node to accept as orphan (proof-of-stake
                         // block might be rejected by stake connection check)
                         vector<CInv> vInv;
                         vInv.push_back(CInv(MSG_BLOCK, GetLastBlockIndex(pindexBest, false)->GetBlockHash()));
