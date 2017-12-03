@@ -1047,15 +1047,15 @@ int64_t GetProofOfStakeReward(int nHeight, int64_t nCoinAge, int64_t nFees)
           nSubsidy = nCoinAge * 555 * 33 / (365 * 33 + 8); // 555%
         }
         else if (nBestHeight <= 300000) {
-            nSubsidy = nCoinAge * (555 * COIN_YEAR_REWARD) * 33 / (365 * 33 + 8); // 555%
+            nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 18; // 555%
         } else if (nBestHeight <= 500000) {
-            nSubsidy = nCoinAge * (444 * COIN_YEAR_REWARD) * 33 / (365 * 33 + 8); // 444%
+            nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 100 / 225; // 444%
         } else if (nBestHeight <= 700000) {
-            nSubsidy = nCoinAge * (333 * COIN_YEAR_REWARD) * 33 / (365 * 33 + 8); // 333%
+            nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 30; // 333%
         } else if (nBestHeight <= 900000) {
-            nSubsidy = nCoinAge * (222 * COIN_YEAR_REWARD) * 33 / (365 * 33 + 8); // 222%
+            nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 45; // 222%
         } else {
-            nSubsidy = nCoinAge * (122 * COIN_YEAR_REWARD) * 33 / (365 * 33 + 8); // 122%
+            nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 90; // 122%
         }
 
         if (nBestHeight % 2 == 0) {
