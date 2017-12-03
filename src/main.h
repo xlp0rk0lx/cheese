@@ -35,7 +35,7 @@ static const int POW_RE_ENABLE = 0;
 static const unsigned int FORK_TIME = 1508493860; // Thursday, October 19, 2017 12:00:00 AM GMT. Reject v13 clients
 static const unsigned int FORK_TIME_2 = 1508493860; // Thursday, October 26, 2017 12:00:00 AM GMT. Reject all older clients
 static const unsigned int FORK_HEIGHT_3 = 100000; // Reject all older clients
-static const unsigned int FORK_HEIGHT_4 = 101000; // Reject all older clients
+static const unsigned int FORK_HEIGHT_4 = 100350; // Reject all older clients
 
 /** The maximum allowed size for a serialized block, in bytes (network rule) */
 static const unsigned int MAX_BLOCK_SIZE = 1000000;
@@ -73,11 +73,11 @@ inline unsigned int GetTargetSpacing(int nHeight)
         return 2 * 45; // 1.5 minutes
     }
 
-    if (nHeight+1 >= 100000 && nHeight+1 < 101000) {
+    if (nHeight+1 >= 100000 && nHeight+1 < 100350) {
         return 4 * 60; // 4 minutes
     }
 
-    if (nHeight+1 >= 101000) {
+    if (nHeight+1 >= 100350) {
         return 1.5 * 60; // 1.5 minutes
     }
 
@@ -1146,7 +1146,7 @@ public:
     int64_t nMoneySupply;
 
     unsigned int nFlags;  // ppcoin: block index flags
-    enum  
+    enum
     {
         BLOCK_PROOF_OF_STAKE = (1 << 0), // is proof-of-stake block
         BLOCK_STAKE_ENTROPY  = (1 << 1), // entropy bit for stake modifier
@@ -1338,7 +1338,7 @@ public:
             pprev, pnext, nFile, nBlockPos, nHeight,
             FormatMoney(nMint).c_str(), FormatMoney(nMoneySupply).c_str(),
             GeneratedStakeModifier() ? "MOD" : "-", GetStakeEntropyBit(), IsProofOfStake()? "PoS" : "PoW",
-            nStakeModifier, nStakeModifierChecksum, 
+            nStakeModifier, nStakeModifierChecksum,
             hashProof.ToString().c_str(),
             prevoutStake.ToString().c_str(), nStakeTime,
             hashMerkleRoot.ToString().c_str(),
