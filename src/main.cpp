@@ -1047,19 +1047,35 @@ int64_t GetProofOfStakeReward(int nHeight, int64_t nCoinAge, int64_t nFees)
           nSubsidy = nCoinAge * 555 * 33 / (365 * 33 + 8); // 555%
         }
         else if (nBestHeight <= 300000) {
-            nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 18; // 555%
+            if(nBestHeight % 2 == 0){
+              nSubsidy = 1.5 * nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 18; // 555% happy
+            }else{
+              nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 18; // 555%
+            }
         } else if (nBestHeight <= 500000) {
-            nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 100 / 225; // 444%
+            if(nBestHeight % 2 == 0){
+              nSubsidy = 1.5 * nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 100 / 225; // 444% happy
+            }else{
+              nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 100 / 225; // 444%
+            }
         } else if (nBestHeight <= 700000) {
-            nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 30; // 333%
+            if(nBestHeight % 2 == 0){
+              nSubsidy = 1.5 * nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 30; // 333% happy
+            }else{
+              nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 30; // 333%
+            }
         } else if (nBestHeight <= 900000) {
-            nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 45; // 222%
+            if(nBestHeight % 2 == 0){
+              nSubsidy = 1.5 * nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 45; // 222% happy
+            }else{
+              nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 45; // 222%
+            }
         } else {
-            nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 90; // 122%
-        }
-
-        if (nBestHeight % 2 == 0) {
-            nSubsidy *= 1.5;
+            if(nBestHeight % 2 == 0){
+              nSubsidy = 1.5 * nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 90; // 122%
+            }else{
+              nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 90; // 122%
+            }
         }
     }
 
