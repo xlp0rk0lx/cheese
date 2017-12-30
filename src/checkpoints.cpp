@@ -11,7 +11,6 @@
 #include "main.h"
 #include "uint256.h"
 
-
 static const int nCheckpointSpan = 10;
 
 namespace Checkpoints
@@ -41,6 +40,7 @@ namespace Checkpoints
         ( 100006, uint256("0x0000000000692b7bcdb6ae4444fee9a139044c86c07946a2c87945a1af8f2645") )
         ( 130003, uint256("0x0000000002d6127bb2c4e277621a483f3dd9a114831e7720846e1a77715cc553") )
         ( 141712, uint256("0x000000000bc474e9a9c11c9ad413ea45bad69c08a4b0f0af1c22e983a5b653b5") )
+        ( 146460,  uint256("0x00000000102831069778650fb8c1781fecc27af9a71adf0df8123229f7db5e88") )
     ;
 
 

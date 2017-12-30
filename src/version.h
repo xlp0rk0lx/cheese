@@ -30,7 +30,7 @@ static const int DATABASE_VERSION = 70509;
 // network protocol versioning
 //
 
-static const int PROTOCOL_VERSION = 60030;
+static const int PROTOCOL_VERSION = 60959;
 
 // intial proto version, to be increased after version/verack negotiation
 static const int INIT_PROTO_VERSION = 209;
@@ -41,6 +41,7 @@ static const int MIN_PROTO_VERSION_FORK = 60016; // v1.4.1 up
 static const int MIN_PROTO_VERSION_FORK_2 = 60017; // v1.5 up
 static const int MIN_PROTO_VERSION_FORK_3 = 60020; // v2.0.0 up
 static const int MIN_PROTO_VERSION_FORK_4 = 60030; // v2.0.1 up
+static const int MIN_PROTO_VERSION_FORK_5 = 60959; // v2.0.1 up
 
 // nTime field added to CAddress, starting with this version;
 // if possible, avoid requesting addresses nodes older than this

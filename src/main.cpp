@@ -1049,8 +1049,7 @@ int64_t GetProofOfStakeReward(int nHeight, int64_t nCoinAge, int64_t nFees)
             }else{
               nSubsidy = nCoinAge * 555 * 33 / (365 * 33 + 8); // 555%
             }
-        }
-        else if (nBestHeight <= 300000) {
+        } else if (nBestHeight <= 300000) {
             if(nBestHeight % 2 == 0){
               nSubsidy = 1.5 * nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8) * 10 / 18; // 555% happy
             }else{
@@ -1287,16 +1286,6 @@ void CBlock::UpdateTime(const CBlockIndex* pindexPrev)
 {
     nTime = max(GetBlockTime(), GetAdjustedTime());
 }
-
-
-
-
-
-
-
-
-
-
 
 bool CTransaction::DisconnectInputs(CTxDB& txdb)
 {
@@ -2962,7 +2951,8 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
         if (pfrom->nVersion < MIN_PROTO_VERSION ||
             (GetAdjustedTime() > FORK_TIME_2 && pfrom->nVersion < MIN_PROTO_VERSION_FORK_2) ||
             (nBestHeight >= FORK_HEIGHT_3 && pfrom->nVersion < MIN_PROTO_VERSION_FORK_3) ||
-            (nBestHeight >= FORK_HEIGHT_4 && pfrom->nVersion < MIN_PROTO_VERSION_FORK_4))
+            (nBestHeight >= FORK_HEIGHT_4 && pfrom->nVersion < MIN_PROTO_VERSION_FORK_4) ||
+            (nBestHeight >= FORK_HEIGHT_5 && pfrom->nVersion < MIN_PROTO_VERSION_FORK_5))
         {
             // disconnect from peers older than this proto version
             printf("partner %s using obsolete version %i; disconnecting\n", pfrom->addr.ToString().c_str(), pfrom->nVersion);
